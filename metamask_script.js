@@ -902,11 +902,11 @@ const Cnfc_ABi = [
     type: "function",
   },
 ];
+
 //  Contract Address
 const Contract_List = {
-  // ico_address: "0xfB7F50dc3581B350015D60843b1867D8BF7f7f18",
-  ico_address: "0xC4b539589bA94E3845F938491721f678c22F4a73",
-  cnfc_Contract_Address: "0x524be019F3EAEbd7c5925b42c1D3c248F06b1D2f",
+  ico_address: "0x386d4e6314B7f30914fde52190230E8DF3AB749C", //server address // Updated 30 oct
+  cnfc_Contract_Address: "0xc92707FB607AeD967f33832D1784b6160Bdb666b", //server address  // Updated 30 octx
   usdt_address: "0x3Bb0f16c334279E12548F8805a1674124fE4FC40",
 };
 
@@ -923,7 +923,6 @@ const BLOCKCHAIN_EXPLORERS = {
   1: "https://etherscan.io",
   5: "https://goerli.etherscan.io",
   137: "https://polygonscan.com",
-  1337: null,
   1402: "https://explorer.public.zkevm-test.net",
   80001: "https://mumbai.polygonscan.com",
   11155111: "https://sepolia.etherscan.io",
@@ -997,6 +996,8 @@ const tokenBalance = async () => {
     console.log({ error });
   }
 };
+
+// Updated 30 oct
 const getTotalTokenSold = async () => {
   // Setup Interface + Encode Function
   const total_TokenSold = CONTRACT_ABI.find((i) => i.name === "totalTokenSold");
@@ -1053,6 +1054,7 @@ const Balance_Of_Token = async () => {
   }
 };
 
+// Updated 30 oct
 const toUnixTimestamp = (humanDate) => {
   const dateObject = new Date(humanDate);
 
@@ -1066,23 +1068,14 @@ const toUnixTimestamp = (humanDate) => {
   return unixTimestamp;
 };
 
-// Example usage:
-const humanDate = "October 27, 2023, 5:55 PM";
-const unixTimestamp = toUnixTimestamp(humanDate);
-
-if (unixTimestamp !== null) {
-  console.log(unixTimestamp);
-} else {
-  console.log("Invalid date input");
-}
-
-
+// Updated 30 oct
+// Only Contract Owner can Update Endtime
 const updateEndTime = async () => {
   let end_time = document.getElementById("endTimeEle");
-  let parseEndTime= toUnixTimestamp(end_time.value);
-  console.log("🚀 -----------------------------------------------🚀")
-  console.log("🚀 ~ updateEndTime ~ parseEndTime:", parseEndTime)
-  console.log("🚀 -----------------------------------------------🚀")
+  let parseEndTime = toUnixTimestamp(end_time.value);
+  console.log("🚀 -----------------------------------------------🚀");
+  console.log("🚀 ~ updateEndTime ~ parseEndTime:", parseEndTime);
+  console.log("🚀 -----------------------------------------------🚀");
   // Setup Interface + Encode Function
   const change_EndTime = CONTRACT_ABI.find((i) => i.name === "changeEndTime");
   const interfaces = new ethers.utils.Interface([change_EndTime]);
@@ -1091,7 +1084,11 @@ const updateEndTime = async () => {
     [parseEndTime]
   );
 
-  let getGas=await getEstimateGas(FromAddress,Contract_List.ico_address,encodedFunction)
+  let getGas = await getEstimateGas(
+    FromAddress,
+    Contract_List.ico_address,
+    encodedFunction
+  );
   try {
     const result = await window.ethereum.request({
       method: "eth_sendTransaction",
@@ -1100,7 +1097,7 @@ const updateEndTime = async () => {
           from: FromAddress,
           to: Contract_List.ico_address,
           data: encodedFunction,
-          gas:getGas.toString()
+          gas: getGas.toString(),
         },
       ],
     });
@@ -1254,7 +1251,8 @@ const Transfer_token = async () => {
       ],
     });
 
-    // await waitForTransactionConfirmation(result);
+    console.log(result);
+    await waitForTransactionConfirmation(result);
     console.log(result);
 
     document.getElementById("transferBtn").innerHTML = "Transfer";
@@ -1307,6 +1305,7 @@ const Claim_Balance = async () => {
         },
       ],
     });
+    console.log(result);
     await waitForTransactionConfirmation(result);
     console.log(`${BLOCKCHAIN_EXPLORERS[11155111]}/tx/${result}`);
   } catch (error) {
@@ -1329,11 +1328,15 @@ const switchNetwork = async () => {
 window.onload = async (event) => {
   await totalSupply();
   await get_priceToken();
+  /* updated 30 oct  */
+  /*--------------------- */
   await tokenBalance();
   await Balance_Of_Token();
   await getTotalTokenSold();
   await getStartTime();
   await getEndtTime();
+  /*--------------------- */
+
   // Event Interactions
   document
     .getElementById("connectBtn")
@@ -1356,6 +1359,7 @@ window.onload = async (event) => {
     .getElementById("claimToken")
     .addEventListener("click", () => Claim_Balance());
 
+  /* updated 30 oct  */
   document
     .getElementById("endTimeBtn")
     .addEventListener("click", () => updateEndTime());
