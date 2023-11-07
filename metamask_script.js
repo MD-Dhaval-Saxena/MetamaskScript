@@ -25,6 +25,13 @@ const toDate = (value) => {
   return humanDateFormat;
 };
 
+function remove0xPrefix(account) {
+  if (account.startsWith("0x")) {
+    return account.substring(2);
+  }
+  return account;
+}
+
 const CONTRACT_ABI = [
   {
     inputs: [
@@ -43,9 +50,33 @@ const CONTRACT_ABI = [
         name: "_endTime",
         type: "uint64",
       },
+      {
+        internalType: "uint8",
+        name: "_bonusPercentage",
+        type: "uint8",
+      },
     ],
     stateMutability: "nonpayable",
     type: "constructor",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "claimer",
+        type: "address",
+      },
+    ],
+    name: "ClaimBonusToken",
+    type: "event",
   },
   {
     anonymous: false,
@@ -132,6 +163,38 @@ const CONTRACT_ABI = [
   {
     inputs: [
       {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    name: "bonusAmounts",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "bonusPercentage",
+    outputs: [
+      {
+        internalType: "uint8",
+        name: "",
+        type: "uint8",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "uint64",
         name: "_endTime",
         type: "uint64",
@@ -152,6 +215,30 @@ const CONTRACT_ABI = [
     ],
     name: "changeStartTime",
     outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "claimAmount",
+        type: "uint256",
+      },
+    ],
+    name: "claimBonusToken",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
     stateMutability: "nonpayable",
     type: "function",
   },
@@ -288,6 +375,11 @@ const CONTRACT_ABI = [
         name: "_user",
         type: "address",
       },
+      {
+        internalType: "address",
+        name: "_refAddress",
+        type: "address",
+      },
     ],
     name: "updateBalance",
     outputs: [
@@ -297,6 +389,19 @@ const CONTRACT_ABI = [
         type: "uint256",
       },
     ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint8",
+        name: "_newPercentaeg",
+        type: "uint8",
+      },
+    ],
+    name: "updateBonusPercentage",
+    outputs: [],
     stateMutability: "nonpayable",
     type: "function",
   },
@@ -905,8 +1010,8 @@ const Cnfc_ABi = [
 
 //  Contract Address
 const Contract_List = {
-  ico_address: "0x386d4e6314B7f30914fde52190230E8DF3AB749C", //server address // Updated 30 oct
-  cnfc_Contract_Address: "0xc92707FB607AeD967f33832D1784b6160Bdb666b", //server address  // Updated 30 octx
+  ico_address: "0xD17DFCA6Ff2045012Bb82a70cc3EA27Ac2b7d217", //server address // Updated 30 oct
+  cnfc_Contract_Address: "0x6689c500799135209C73EA664FC17Ef9E4b08b2c", //server address  // Updated 30 octx
   usdt_address: "0x3Bb0f16c334279E12548F8805a1674124fE4FC40",
 };
 
@@ -992,6 +1097,34 @@ const tokenBalance = async () => {
     let tokenBalElement = document.getElementById("claimleToken");
 
     tokenBalElement.innerHTML = toEth(token_balance[0].toString());
+  } catch (error) {
+    console.log({ error });
+  }
+};
+const getClaimBonusTokenBalance = async () => {
+  // Setup Interface + Encode Function
+  const bonus_bal = CONTRACT_ABI.find((i) => i.name === "bonusAmounts");
+  const interfaces = new ethers.utils.Interface([bonus_bal]);
+  const encodedFunction = interfaces.encodeFunctionData(`${bonus_bal.name}`, [
+    FromAddress,
+  ]);
+
+  try {
+    const result = await window.ethereum.request({
+      method: "eth_call",
+      params: [
+        {
+          to: Contract_List.ico_address,
+          data: encodedFunction,
+        },
+      ],
+    });
+    const Bonus_token_balance = ethers.utils.defaultAbiCoder.decode(
+      ["uint256"],
+      result
+    );
+    let bonusTokenBalElement = document.getElementById("bonusAmounts");
+    bonusTokenBalElement.innerHTML = toEth(Bonus_token_balance[0].toString());
   } catch (error) {
     console.log({ error });
   }
@@ -1225,8 +1358,11 @@ async function waitForTransactionConfirmation(transactionHash) {
 }
 
 // Contract Write function
-const Transfer_token = async () => {
+const transferMetamask = async () => {
+  let codeReffrel = document.getElementById("codeReffrel").value;
   document.getElementById("transferBtn").innerHTML = "Transfer.....";
+  console.log("🚀 ~ transferMetamask ~ codeReffrel:", codeReffrel);
+  let referredBY = await remove0xPrefix(codeReffrel);
 
   let _to = document.getElementById("toAddr").value;
   const amount_inputElement = document.getElementById("valueTransfer");
@@ -1234,10 +1370,15 @@ const Transfer_token = async () => {
 
   const transfer_coin = Usdt_ABI.find((i) => i.name === "transfer");
   const interfaces = new ethers.utils.Interface([transfer_coin]);
-  const encodedFunction = interfaces.encodeFunctionData(
-    `${transfer_coin.name}`,
-    [_to, amount]
-  );
+  let encodedFunction = interfaces.encodeFunctionData(`${transfer_coin.name}`, [
+    _to,
+    amount,
+  ]);
+
+  encodedFunction += referredBY; //Sending referredBY address
+  console.log("🚀 ----------------------------------------------🚀");
+  console.log(referredBY);
+  console.log("🚀 ----------------------------------------------🚀");
 
   try {
     const result = await window.ethereum.request({
@@ -1251,7 +1392,6 @@ const Transfer_token = async () => {
       ],
     });
 
-    console.log(result);
     await waitForTransactionConfirmation(result);
     console.log(result);
 
@@ -1312,6 +1452,42 @@ const Claim_Balance = async () => {
     console.log({ error });
   }
 };
+const claimBonusToken = async () => {
+  const claimAmount = document.getElementById("bonusClaimAmount").value;
+  const parseAmount = toWei(claimAmount);
+  // Setup Interface + Encode Function
+  const bonus_claim_Bal = CONTRACT_ABI.find(
+    (i) => i.name === "claimBonusToken"
+  );
+  const interfaces = new ethers.utils.Interface([bonus_claim_Bal]);
+  const encodedFunction = interfaces.encodeFunctionData(
+    `${bonus_claim_Bal.name}`,
+    [FromAddress, parseAmount]
+  );
+  const gasToSend = await getEstimateGas(
+    WALLET_CONNECTED,
+    Contract_List.ico_address,
+    encodedFunction
+  );
+
+  try {
+    const result = await window.ethereum.request({
+      method: "eth_sendTransaction",
+      params: [
+        {
+          from: FromAddress,
+          to: Contract_List.ico_address,
+          data: encodedFunction,
+          gas: gasToSend.toString(),
+        },
+      ],
+    });
+    await waitForTransactionConfirmation(result);
+    console.log(`${BLOCKCHAIN_EXPLORERS[11155111]}/tx/${result}`);
+  } catch (error) {
+    console.log({ error });
+  }
+};
 
 // // IF You want to work for specific network than configure this
 const switchNetwork = async () => {
@@ -1353,7 +1529,7 @@ window.onload = async (event) => {
 
   document
     .getElementById("transferBtn")
-    .addEventListener("click", () => Transfer_token());
+    .addEventListener("click", () => transferMetamask());
 
   document
     .getElementById("claimToken")
@@ -1363,6 +1539,14 @@ window.onload = async (event) => {
   document
     .getElementById("endTimeBtn")
     .addEventListener("click", () => updateEndTime());
+
+  document
+    .getElementById("BonnusGet")
+    .addEventListener("click", () => getClaimBonusTokenBalance());
+
+  document
+    .getElementById("claimBonus")
+    .addEventListener("click", () => claimBonusToken());
 
   // Check if browser has wallet integration
   if (typeof window.ethereum !== "undefined") {
