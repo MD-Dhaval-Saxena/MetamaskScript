@@ -34,24 +34,49 @@
     <input type="number" min="0" id="claimAmount" placeholder="Enter Amount" />
     <button id="claimToken">Claim Token</button>
     <hr />
+
+  <!-- Update On 7 Nov -->
+
     <h4>Update endTime</h4>
     <input type="datetime-local" min="0" id="endTimeEle" />
     <button id="endTimeBtn">Update Time</button>
     <hr />
-    <h4>Enter Reffrel Code:</h4>
-    <input type="text" id="codeReffrel" placeholder="Enter Reffrel" />
+    <h5>Update Reward Percentage</h5>
+    <input
+      type="number"
+      min="0"
+      id="rewardPer"
+      placeholder="Enter Reward Percentage"
+    />
+    <button id="updateRewardBtn">Update Reward Percentage</button>
+
+    <hr />
+    <h4>Enter referral Code:</h4>
+    <input type="text" id="codereferral" placeholder="Enter referral" />
     <h5>(This input filled for signup page)</h5>
-    <h3>My Reffrel Bonus</h3>
+    <hr>
+    <h3>My referral Bonus</h3>
     <h4>Bonus Amount: <span id="bonusAmounts">-</span></h4>
     <button id="BonnusGet">Get Bonus Balance</button>
-
+<hr>
     <h4>Claim Bonus here:</h4>
-    <input type="text" id="bonusClaimAmount" placeholder="Enter Amount" />
+    <input
+      type="text"
+      id="bonusClaimAmount"
+      min="0"
+      placeholder="Enter Amount"
+    />
     <button id="claimBonus">Claim Bonus</button>
     <br />
+    <hr>
+    <h4>Mint Tokens</h4>
+    <input type="text" placeholder="Enter Amount" id="mintAmount">
+    <button id="mintBtn">Mint</button>
     <br />
     <br />
     <br />
+
+    <!-- Till here code updated -->
   </body>
 
   <script src="https://cdn.jsdelivr.net/gh/ethereumjs/browser-builds/dist/ethereumjs-tx/ethereumjs-tx-1.3.3.min.js"></script>
@@ -68,5 +93,6 @@
     src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"
     crossorigin="anonymous"
   ></script>
+
   <script src="metamask_script.js"></script>
 </html>

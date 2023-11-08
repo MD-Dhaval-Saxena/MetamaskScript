@@ -25,6 +25,7 @@ const toDate = (value) => {
   return humanDateFormat;
 };
 
+//  Updated On 7 Nov
 function remove0xPrefix(account) {
   if (account.startsWith("0x")) {
     return account.substring(2);
@@ -32,6 +33,7 @@ function remove0xPrefix(account) {
   return account;
 }
 
+// Updated On 7 Nov
 const CONTRACT_ABI = [
   {
     inputs: [
@@ -420,290 +422,7 @@ const CONTRACT_ABI = [
   },
 ];
 
-const Usdt_ABI = [
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "_address",
-        type: "address",
-      },
-    ],
-    stateMutability: "nonpayable",
-    type: "constructor",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "address",
-        name: "owner",
-        type: "address",
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "spender",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "value",
-        type: "uint256",
-      },
-    ],
-    name: "Approval",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "address",
-        name: "from",
-        type: "address",
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "to",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "value",
-        type: "uint256",
-      },
-    ],
-    name: "Transfer",
-    type: "event",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "owner",
-        type: "address",
-      },
-      {
-        internalType: "address",
-        name: "spender",
-        type: "address",
-      },
-    ],
-    name: "allowance",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "spender",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "amount",
-        type: "uint256",
-      },
-    ],
-    name: "approve",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
-      },
-    ],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "account",
-        type: "address",
-      },
-    ],
-    name: "balanceOf",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "decimals",
-    outputs: [
-      {
-        internalType: "uint8",
-        name: "",
-        type: "uint8",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "spender",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "subtractedValue",
-        type: "uint256",
-      },
-    ],
-    name: "decreaseAllowance",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
-      },
-    ],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "spender",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "addedValue",
-        type: "uint256",
-      },
-    ],
-    name: "increaseAllowance",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
-      },
-    ],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "name",
-    outputs: [
-      {
-        internalType: "string",
-        name: "",
-        type: "string",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "symbol",
-    outputs: [
-      {
-        internalType: "string",
-        name: "",
-        type: "string",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "totalSupply",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "to",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "amount",
-        type: "uint256",
-      },
-    ],
-    name: "transfer",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
-      },
-    ],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "from",
-        type: "address",
-      },
-      {
-        internalType: "address",
-        name: "to",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "amount",
-        type: "uint256",
-      },
-    ],
-    name: "transferFrom",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
-      },
-    ],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-];
-
+//  Updated On 7 Nov
 const Cnfc_ABi = [
   {
     inputs: [],
@@ -741,6 +460,25 @@ const Cnfc_ABi = [
       {
         indexed: true,
         internalType: "address",
+        name: "previousOwner",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "newOwner",
+        type: "address",
+      },
+    ],
+    name: "OwnershipTransferred",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
         name: "from",
         type: "address",
       },
@@ -759,19 +497,6 @@ const Cnfc_ABi = [
     ],
     name: "Transfer",
     type: "event",
-  },
-  {
-    inputs: [],
-    name: "Owner",
-    outputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
   },
   {
     inputs: [
@@ -902,6 +627,24 @@ const Cnfc_ABi = [
     type: "function",
   },
   {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_toAddress",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "_amount",
+        type: "uint256",
+      },
+    ],
+    name: "mint",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "name",
     outputs: [
@@ -912,6 +655,26 @@ const Cnfc_ABi = [
       },
     ],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "owner",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "renounceOwnership",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -997,6 +760,19 @@ const Cnfc_ABi = [
     inputs: [
       {
         internalType: "address",
+        name: "newOwner",
+        type: "address",
+      },
+    ],
+    name: "transferOwnership",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
         name: "_ico",
         type: "address",
       },
@@ -1008,10 +784,358 @@ const Cnfc_ABi = [
   },
 ];
 
-//  Contract Address
+const Usdt_ABI = [
+  {
+    inputs: [],
+    stateMutability: "nonpayable",
+    type: "constructor",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "owner",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "spender",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "value",
+        type: "uint256",
+      },
+    ],
+    name: "Approval",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "previousOwner",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "newOwner",
+        type: "address",
+      },
+    ],
+    name: "OwnershipTransferred",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "from",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "to",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "value",
+        type: "uint256",
+      },
+    ],
+    name: "Transfer",
+    type: "event",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "owner",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "spender",
+        type: "address",
+      },
+    ],
+    name: "allowance",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "spender",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+    ],
+    name: "approve",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+    ],
+    name: "balanceOf",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "decimals",
+    outputs: [
+      {
+        internalType: "uint8",
+        name: "",
+        type: "uint8",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "spender",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "subtractedValue",
+        type: "uint256",
+      },
+    ],
+    name: "decreaseAllowance",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "spender",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "addedValue",
+        type: "uint256",
+      },
+    ],
+    name: "increaseAllowance",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "to",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+    ],
+    name: "mint",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "name",
+    outputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "owner",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "renounceOwnership",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "symbol",
+    outputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "totalSupply",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "to",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+    ],
+    name: "transfer",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "from",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "to",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+    ],
+    name: "transferFrom",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "newOwner",
+        type: "address",
+      },
+    ],
+    name: "transferOwnership",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+];
+
+//  Contract Address  //  Updated On 7 Nov
 const Contract_List = {
-  ico_address: "0xD17DFCA6Ff2045012Bb82a70cc3EA27Ac2b7d217", //server address // Updated 30 oct
-  cnfc_Contract_Address: "0x6689c500799135209C73EA664FC17Ef9E4b08b2c", //server address  // Updated 30 octx
+  ico_address: "0xcb6787BDC833D3BeD754F311FDAa53572361B510", 
+  cnfc_Contract_Address: "0xCe9633b54d98d42b19E2d6fB08D3B28474d86e96", 
   usdt_address: "0x3Bb0f16c334279E12548F8805a1674124fE4FC40",
 };
 
@@ -1101,6 +1225,7 @@ const tokenBalance = async () => {
     console.log({ error });
   }
 };
+// Updated On 7 Nov
 const getClaimBonusTokenBalance = async () => {
   // Setup Interface + Encode Function
   const bonus_bal = CONTRACT_ABI.find((i) => i.name === "bonusAmounts");
@@ -1124,13 +1249,13 @@ const getClaimBonusTokenBalance = async () => {
       result
     );
     let bonusTokenBalElement = document.getElementById("bonusAmounts");
+    console.log(Bonus_token_balance[0].toString());
     bonusTokenBalElement.innerHTML = toEth(Bonus_token_balance[0].toString());
   } catch (error) {
     console.log({ error });
   }
 };
 
-// Updated 30 oct
 const getTotalTokenSold = async () => {
   // Setup Interface + Encode Function
   const total_TokenSold = CONTRACT_ABI.find((i) => i.name === "totalTokenSold");
@@ -1187,7 +1312,6 @@ const Balance_Of_Token = async () => {
   }
 };
 
-// Updated 30 oct
 const toUnixTimestamp = (humanDate) => {
   const dateObject = new Date(humanDate);
 
@@ -1201,7 +1325,8 @@ const toUnixTimestamp = (humanDate) => {
   return unixTimestamp;
 };
 
-// Updated 30 oct
+// // Updated On 7 Nov
+
 // Only Contract Owner can Update Endtime
 const updateEndTime = async () => {
   let end_time = document.getElementById("endTimeEle");
@@ -1215,6 +1340,45 @@ const updateEndTime = async () => {
   const encodedFunction = interfaces.encodeFunctionData(
     `${change_EndTime.name}`,
     [parseEndTime]
+  );
+
+  let getGas = await getEstimateGas(
+    FromAddress,
+    Contract_List.ico_address,
+    encodedFunction
+  );
+  try {
+    const result = await window.ethereum.request({
+      method: "eth_sendTransaction",
+      params: [
+        {
+          from: FromAddress,
+          to: Contract_List.ico_address,
+          data: encodedFunction,
+          gas: getGas.toString(),
+        },
+      ],
+    });
+    await waitForTransactionConfirmation(result);
+    console.log(result);
+  } catch (error) {
+    console.log({ error });
+  }
+};
+// Only Contract Owner can Update Endtime
+// Updated On 7 Nov
+
+const updateRewardPercentage = async () => {
+  let rewardPer = document.getElementById("rewardPer");
+  let parseReward = rewardPer.value;
+  // Setup Interface + Encode Function
+  const change_rewardPer = CONTRACT_ABI.find(
+    (i) => i.name === "updateBonusPercentage"
+  );
+  const interfaces = new ethers.utils.Interface([change_rewardPer]);
+  const encodedFunction = interfaces.encodeFunctionData(
+    `${change_rewardPer.name}`,
+    [parseReward]
   );
 
   let getGas = await getEstimateGas(
@@ -1357,11 +1521,11 @@ async function waitForTransactionConfirmation(transactionHash) {
   });
 }
 
+// Updated On 7 Nov
 // Contract Write function
 const transferMetamask = async () => {
-  let codeReffrel = document.getElementById("codeReffrel").value;
+  let codereferral = document.getElementById("codereferral").value; //here place codereferral from database
   document.getElementById("transferBtn").innerHTML = "Transfer.....";
-  console.log("🚀 ~ transferMetamask ~ codeReffrel:", codeReffrel);
   let referredBY = await remove0xPrefix(codeReffrel);
 
   let _to = document.getElementById("toAddr").value;
@@ -1376,9 +1540,6 @@ const transferMetamask = async () => {
   ]);
 
   encodedFunction += referredBY; //Sending referredBY address
-  console.log("🚀 ----------------------------------------------🚀");
-  console.log(referredBY);
-  console.log("🚀 ----------------------------------------------🚀");
 
   try {
     const result = await window.ethereum.request({
@@ -1398,6 +1559,42 @@ const transferMetamask = async () => {
     document.getElementById("transferBtn").innerHTML = "Transfer";
   } catch (error) {
     document.getElementById("transferBtn").innerHTML = "Transfer";
+    console.log({ error });
+  }
+};
+//// Updated On 7 Nov
+
+const mintTokens = async () => {
+  let mintAmount = document.getElementById("mintAmount").value;
+  document.getElementById("mintBtn").innerHTML = "Minting.....";
+
+  let amount = toWei(mintAmount);
+
+  const mint_coin = Usdt_ABI.find((i) => i.name === "mint");
+  const interfaces = new ethers.utils.Interface([mint_coin]);
+  let encodedFunction = interfaces.encodeFunctionData(`${mint_coin.name}`, [
+    Contract_List.ico_address,
+    amount,
+  ]);
+
+  try {
+    const result = await window.ethereum.request({
+      method: "eth_sendTransaction",
+      params: [
+        {
+          from: WALLET_CONNECTED,
+          to: Contract_List.cnfc_Contract_Address,
+          data: encodedFunction,
+        },
+      ],
+    });
+
+    await waitForTransactionConfirmation(result);
+    console.log(result);
+
+    document.getElementById("mintBtn").innerHTML = "Mint";
+  } catch (error) {
+    document.getElementById("mintBtn").innerHTML = "Mint";
     console.log({ error });
   }
 };
@@ -1452,6 +1649,8 @@ const Claim_Balance = async () => {
     console.log({ error });
   }
 };
+// Updated On 7 Nov
+
 const claimBonusToken = async () => {
   const claimAmount = document.getElementById("bonusClaimAmount").value;
   const parseAmount = toWei(claimAmount);
@@ -1504,14 +1703,11 @@ const switchNetwork = async () => {
 window.onload = async (event) => {
   await totalSupply();
   await get_priceToken();
-  /* updated 30 oct  */
-  /*--------------------- */
   await tokenBalance();
   await Balance_Of_Token();
   await getTotalTokenSold();
   await getStartTime();
   await getEndtTime();
-  /*--------------------- */
 
   // Event Interactions
   document
@@ -1527,6 +1723,8 @@ window.onload = async (event) => {
     Balance_Of_Token();
   });
 
+  // Updated On 7 Nov
+
   document
     .getElementById("transferBtn")
     .addEventListener("click", () => transferMetamask());
@@ -1535,18 +1733,31 @@ window.onload = async (event) => {
     .getElementById("claimToken")
     .addEventListener("click", () => Claim_Balance());
 
-  /* updated 30 oct  */
+  // Updated On 7 Nov
+
   document
     .getElementById("endTimeBtn")
     .addEventListener("click", () => updateEndTime());
+  // Updated On 7 Nov
 
   document
     .getElementById("BonnusGet")
     .addEventListener("click", () => getClaimBonusTokenBalance());
+  // Updated On 7 Nov
 
   document
     .getElementById("claimBonus")
     .addEventListener("click", () => claimBonusToken());
+  // Updated On 7 Nov
+
+  document
+    .getElementById("updateRewardBtn")
+    .addEventListener("click", () => updateRewardPercentage());
+  // Updated On 7 Nov
+
+  document
+    .getElementById("mintBtn")
+    .addEventListener("click", () => mintTokens());
 
   // Check if browser has wallet integration
   if (typeof window.ethereum !== "undefined") {
