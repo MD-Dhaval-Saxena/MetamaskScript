@@ -33,7 +33,7 @@ function remove0xPrefix(account) {
   return account;
 }
 
-// Updated On 7 Nov
+// Updated On 8 Nov
 const CONTRACT_ABI = [
   {
     inputs: [
@@ -103,6 +103,25 @@ const CONTRACT_ABI = [
     anonymous: false,
     inputs: [
       {
+        indexed: true,
+        internalType: "address",
+        name: "previousOwner",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "newOwner",
+        type: "address",
+      },
+    ],
+    name: "OwnershipTransferred",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
         indexed: false,
         internalType: "uint256",
         name: "newPrice",
@@ -148,19 +167,6 @@ const CONTRACT_ABI = [
     ],
     name: "UpdateBalance",
     type: "event",
-  },
-  {
-    inputs: [],
-    name: "Owner",
-    outputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
   },
   {
     inputs: [
@@ -328,6 +334,19 @@ const CONTRACT_ABI = [
   },
   {
     inputs: [],
+    name: "owner",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "pricePerToken",
     outputs: [
       {
@@ -337,6 +356,13 @@ const CONTRACT_ABI = [
       },
     ],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "renounceOwnership",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -363,6 +389,19 @@ const CONTRACT_ABI = [
       },
     ],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "newOwner",
+        type: "address",
+      },
+    ],
+    name: "transferOwnership",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -1132,10 +1171,11 @@ const Usdt_ABI = [
   },
 ];
 
-//  Contract Address  //  Updated On 7 Nov
+//  Contract Address  //  // Updated On 8 Nov
+
 const Contract_List = {
-  ico_address: "0xcb6787BDC833D3BeD754F311FDAa53572361B510", 
-  cnfc_Contract_Address: "0xCe9633b54d98d42b19E2d6fB08D3B28474d86e96", 
+  ico_address: "0x326f267272877cF3AB5483F12073993e14bE2fdA",
+  cnfc_Contract_Address: "0x8BC5fbC1441A7C4D576d16Db0ad2D950F8B8B68a",
   usdt_address: "0x3Bb0f16c334279E12548F8805a1674124fE4FC40",
 };
 
@@ -1331,9 +1371,7 @@ const toUnixTimestamp = (humanDate) => {
 const updateEndTime = async () => {
   let end_time = document.getElementById("endTimeEle");
   let parseEndTime = toUnixTimestamp(end_time.value);
-  console.log("🚀 -----------------------------------------------🚀");
-  console.log("🚀 ~ updateEndTime ~ parseEndTime:", parseEndTime);
-  console.log("🚀 -----------------------------------------------🚀");
+
   // Setup Interface + Encode Function
   const change_EndTime = CONTRACT_ABI.find((i) => i.name === "changeEndTime");
   const interfaces = new ethers.utils.Interface([change_EndTime]);
@@ -1526,7 +1564,10 @@ async function waitForTransactionConfirmation(transactionHash) {
 const transferMetamask = async () => {
   let codereferral = document.getElementById("codereferral").value; //here place codereferral from database
   document.getElementById("transferBtn").innerHTML = "Transfer.....";
-  let referredBY = await remove0xPrefix(codeReffrel);
+  let referredBY = await remove0xPrefix(codereferral);
+  console.log("🚀 ----------------------------------------------🚀");
+  console.log("🚀 ~ transferMetamask ~ referredBY:", referredBY);
+  console.log("🚀 ----------------------------------------------🚀");
 
   let _to = document.getElementById("toAddr").value;
   const amount_inputElement = document.getElementById("valueTransfer");
