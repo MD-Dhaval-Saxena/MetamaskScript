@@ -25,7 +25,6 @@ const toDate = (value) => {
   return humanDateFormat;
 };
 
-//  Updated On 7 Nov
 function remove0xPrefix(account) {
   if (account.startsWith("0x")) {
     return account.substring(2);
@@ -33,7 +32,7 @@ function remove0xPrefix(account) {
   return account;
 }
 
-// Updated On 8 Nov
+// Updated On 20 Nov
 const CONTRACT_ABI = [
   {
     inputs: [
@@ -60,6 +59,19 @@ const CONTRACT_ABI = [
     ],
     stateMutability: "nonpayable",
     type: "constructor",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "newTime",
+        type: "uint256",
+      },
+    ],
+    name: "ChangeEndTime",
+    type: "event",
   },
   {
     anonymous: false,
@@ -169,6 +181,32 @@ const CONTRACT_ABI = [
     type: "event",
   },
   {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint8",
+        name: "newPercentage",
+        type: "uint8",
+      },
+    ],
+    name: "UpdateBonusPercentage",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "newPricePerToken",
+        type: "uint256",
+      },
+    ],
+    name: "UpdatePricePerToken",
+    type: "event",
+  },
+  {
     inputs: [
       {
         internalType: "address",
@@ -209,19 +247,6 @@ const CONTRACT_ABI = [
       },
     ],
     name: "changeEndTime",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint64",
-        name: "_startTime",
-        type: "uint64",
-      },
-    ],
-    name: "changeStartTime",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -314,19 +339,6 @@ const CONTRACT_ABI = [
         internalType: "uint8",
         name: "",
         type: "uint8",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "maxToken",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
       },
     ],
     stateMutability: "view",
@@ -461,7 +473,6 @@ const CONTRACT_ABI = [
   },
 ];
 
-//  Updated On 7 Nov
 const Cnfc_ABi = [
   {
     inputs: [],
@@ -1171,11 +1182,10 @@ const Usdt_ABI = [
   },
 ];
 
-//  Contract Address  //  // Updated On 8 Nov
-
+// Updated On 20 Nov
 const Contract_List = {
-  ico_address: "0x326f267272877cF3AB5483F12073993e14bE2fdA",
-  cnfc_Contract_Address: "0x8BC5fbC1441A7C4D576d16Db0ad2D950F8B8B68a",
+  ico_address: "0x05856C1b38cA1DE9f0B4d6DfDb4B30AF660fdea5",
+  cnfc_Contract_Address: "0x8defab76C8d7c71E938f1A5F1ec6690171A867b3",
   usdt_address: "0x3Bb0f16c334279E12548F8805a1674124fE4FC40",
 };
 
@@ -1265,7 +1275,7 @@ const tokenBalance = async () => {
     console.log({ error });
   }
 };
-// Updated On 7 Nov
+
 const getClaimBonusTokenBalance = async () => {
   // Setup Interface + Encode Function
   const bonus_bal = CONTRACT_ABI.find((i) => i.name === "bonusAmounts");
@@ -1289,7 +1299,6 @@ const getClaimBonusTokenBalance = async () => {
       result
     );
     let bonusTokenBalElement = document.getElementById("bonusAmounts");
-    console.log(Bonus_token_balance[0].toString());
     bonusTokenBalElement.innerHTML = toEth(Bonus_token_balance[0].toString());
   } catch (error) {
     console.log({ error });
@@ -1365,7 +1374,7 @@ const toUnixTimestamp = (humanDate) => {
   return unixTimestamp;
 };
 
-// // Updated On 7 Nov
+//
 
 // Only Contract Owner can Update Endtime
 const updateEndTime = async () => {
@@ -1404,7 +1413,6 @@ const updateEndTime = async () => {
   }
 };
 // Only Contract Owner can Update Endtime
-// Updated On 7 Nov
 
 const updateRewardPercentage = async () => {
   let rewardPer = document.getElementById("rewardPer");
@@ -1559,15 +1567,11 @@ async function waitForTransactionConfirmation(transactionHash) {
   });
 }
 
-// Updated On 7 Nov
 // Contract Write function
 const transferMetamask = async () => {
   let codereferral = document.getElementById("codereferral").value; //here place codereferral from database
   document.getElementById("transferBtn").innerHTML = "Transfer.....";
   let referredBY = await remove0xPrefix(codereferral);
-  console.log("🚀 ----------------------------------------------🚀");
-  console.log("🚀 ~ transferMetamask ~ referredBY:", referredBY);
-  console.log("🚀 ----------------------------------------------🚀");
 
   let _to = document.getElementById("toAddr").value;
   const amount_inputElement = document.getElementById("valueTransfer");
@@ -1603,7 +1607,7 @@ const transferMetamask = async () => {
     console.log({ error });
   }
 };
-//// Updated On 7 Nov
+//
 
 const mintTokens = async () => {
   let mintAmount = document.getElementById("mintAmount").value;
@@ -1690,7 +1694,6 @@ const Claim_Balance = async () => {
     console.log({ error });
   }
 };
-// Updated On 7 Nov
 
 const claimBonusToken = async () => {
   const claimAmount = document.getElementById("bonusClaimAmount").value;
@@ -1764,8 +1767,6 @@ window.onload = async (event) => {
     Balance_Of_Token();
   });
 
-  // Updated On 7 Nov
-
   document
     .getElementById("transferBtn")
     .addEventListener("click", () => transferMetamask());
@@ -1774,27 +1775,21 @@ window.onload = async (event) => {
     .getElementById("claimToken")
     .addEventListener("click", () => Claim_Balance());
 
-  // Updated On 7 Nov
-
   document
     .getElementById("endTimeBtn")
     .addEventListener("click", () => updateEndTime());
-  // Updated On 7 Nov
 
   document
     .getElementById("BonnusGet")
     .addEventListener("click", () => getClaimBonusTokenBalance());
-  // Updated On 7 Nov
 
   document
     .getElementById("claimBonus")
     .addEventListener("click", () => claimBonusToken());
-  // Updated On 7 Nov
 
   document
     .getElementById("updateRewardBtn")
     .addEventListener("click", () => updateRewardPercentage());
-  // Updated On 7 Nov
 
   document
     .getElementById("mintBtn")
