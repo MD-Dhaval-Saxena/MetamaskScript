@@ -1,6 +1,6 @@
 let WALLET_CONNECTED = "";
 let WALLET_CONNECTION_PREF_KEY = "WC_PREF";
-let FromAddress = localStorage.getItem("account");
+let FromAddress = localStorage.getItem("account").trim(); // Updated On 21 Nov
 
 const toWei = (value) => ethers.utils.parseEther(value.toString());
 const convert_toEth = (value) => ethers.utils.formatEther(value);
@@ -1184,8 +1184,8 @@ const Usdt_ABI = [
 
 // Updated On 20 Nov
 const Contract_List = {
-  ico_address: "0x05856C1b38cA1DE9f0B4d6DfDb4B30AF660fdea5",
-  cnfc_Contract_Address: "0x8defab76C8d7c71E938f1A5F1ec6690171A867b3",
+  ico_address: "0x83295ed7424bDaa19F11969FC403D7aF1cB80292",
+  cnfc_Contract_Address: "0x88e8B1756FF261A7d6C3Ac3364D0bE0fb75F761f",
   usdt_address: "0x3Bb0f16c334279E12548F8805a1674124fE4FC40",
 };
 
@@ -1224,11 +1224,12 @@ const connect = async () => {
 };
 // Metamask disconnect Function
 
+// Updated on 21 nov
 const disconnect = () => {
   WALLET_CONNECTED = false;
   // Remove wallet connection preference
-  localStorage.removeItem(WALLET_CONNECTION_PREF_KEY);
-  localStorage.removeItem("account");
+  localStorage.setItem("account", null);
+  localStorage.setItem(WALLET_CONNECTION_PREF_KEY, WALLET_CONNECTED);
   CHAIN_CONNECTED.name = null;
   CHAIN_CONNECTED.id = null;
   document.getElementById("connectBtn").innerHTML = "Connect Metamask";
@@ -1745,13 +1746,7 @@ const switchNetwork = async () => {
 };
 
 window.onload = async (event) => {
-  await totalSupply();
-  await get_priceToken();
-  await tokenBalance();
-  await Balance_Of_Token();
-  await getTotalTokenSold();
-  await getStartTime();
-  await getEndtTime();
+  // Updated on 20 nov
 
   // Event Interactions
   document
@@ -1822,5 +1817,17 @@ window.onload = async (event) => {
     // Retrieve chain
     await ethereum.request({ method: "eth_chainId" });
     connect();
+  }
+  // Updated on 21 nov
+  // if the wallet permissions are present, this code asynchronously fetches the total supply of a token and its current price
+  if (hasWalletPermissions.length > 0) {
+    await totalSupply();
+    await get_priceToken();
+
+    await tokenBalance();
+    await Balance_Of_Token();
+    await getTotalTokenSold();
+    await getStartTime();
+    await getEndtTime();
   }
 };
